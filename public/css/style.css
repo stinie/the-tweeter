@@ -1,0 +1,279 @@
+
+/* ========================================
+   1. LOGIN AND REGISTRATION
+======================================== */
+
+/* Frame each section like the wireframe. */
+section:has(> form[action="/auth/login"]),
+section:has(> form[action="/auth/register"]) {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 48rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 2px solid black;
+  font-family: sans-serif;
+}
+
+/* Place the heading across the frame's top border. */
+section:has(> form[action="/auth/login"]) > h2,
+section:has(> form[action="/auth/register"]) > h2 {
+  position: absolute;
+  top: -0.75rem;
+  left: 1rem;
+  margin: 0;
+  padding: 0 0.5rem;
+  background: white;
+  font-size: 1rem;
+}
+
+/* Align labels and fields in two columns. */
+form[action="/auth/login"],
+form[action="/auth/register"] {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
+/* Give both forms matching inputs. */
+form[action="/auth/login"] input,
+form[action="/auth/register"] input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 0.5rem;
+  border: 1px solid black;
+  background: white;
+  font: inherit;
+}
+
+/* Place each button below its input column. */
+form[action="/auth/login"] button,
+form[action="/auth/register"] button {
+  grid-column: 2;
+  justify-self: end;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid black;
+  background: white;
+  color: black;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Stack labels and inputs on narrow screens. */
+@media (max-width: 540px) {
+  form[action="/auth/login"],
+  form[action="/auth/register"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  form[action="/auth/login"] button,
+  form[action="/auth/register"] button {
+    grid-column: 1;
+  }
+}
+
+/* ========================================
+   2. PAGE LAYOUT
+======================================== */
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
+
+main {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 52rem;
+  margin-inline: auto;
+  padding: 2rem 1.5rem;
+}
+
+main > h1,
+main > p {
+  text-align: center;
+}
+
+/* ========================================
+   3. HEADER
+======================================== */
+
+header {
+  padding: 1rem 1.5rem;
+  border-bottom: 2px solid black;
+}
+
+header nav {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+header a {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+header form {
+  margin: 0;
+}
+
+header button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid black;
+  background: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ========================================
+   4. ADD TWEET BUTTON
+======================================== */
+
+.button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid black;
+  background: green;
+  color: white;
+  font: inherit;
+  text-decoration: none;
+}
+
+main > section:has(> .button) {
+  text-align: center;
+}
+
+/* Keep navigation readable on smaller screens. */
+@media (max-width: 540px) {
+  header nav {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
+   5. ADD TWEET FORM
+======================================== */
+
+/* Stack labels, fields and the submit button. */
+form[action="/addTweet"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+/* Give the title and tweet matching fields. */
+form[action="/addTweet"] input,
+form[action="/addTweet"] textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid black;
+  background: white;
+  font: inherit;
+}
+
+form[action="/addTweet"] textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+/* Align the blue submit button to the right. */
+form[action="/addTweet"] button {
+  justify-self: end;
+  padding: 0.5rem 1rem;
+  border: 1px solid black;
+  background: rgb(51 112 190);
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ========================================
+   6. TWEET ACTIONS
+======================================== */
+
+.tweet-actions {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: end;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.tweet-actions form {
+  margin: 0;
+}
+
+.delete-button,
+.edit-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid black;
+  color: white;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.delete-button {
+  background: rgb(207 43 39);
+}
+
+.edit-button {
+  background: rgb(51 112 190);
+}
+
+/* ========================================
+   5. CREATE AND EDIT TWEET FORMS
+======================================== */
+
+/* Stack labels, fields and the submit button. */
+form[action="/addTweet"],
+form[action^="/tweets/edit/"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+/* Give the title and tweet matching fields. */
+form[action="/addTweet"] input,
+form[action="/addTweet"] textarea,
+form[action^="/tweets/edit/"] input,
+form[action^="/tweets/edit/"] textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid black;
+  background: white;
+  font: inherit;
+}
+
+form[action="/addTweet"] textarea,
+form[action^="/tweets/edit/"] textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+/* Align the blue submit button to the right. */
+form[action="/addTweet"] button,
+form[action^="/tweets/edit/"] button {
+  justify-self: end;
+  padding: 0.5rem 1rem;
+  border: 1px solid black;
+  background: rgb(51 112 190);
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}

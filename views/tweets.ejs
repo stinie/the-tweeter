@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📁</text></svg>">
+  <title>Dashboard | Tweeter</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <%- include("partials/header") %>
+  <main>
+    <section>
+      <h1>🏠 Tweeter</h1>
+      <!-- Open the page for adding a new tweet. -->
+      <a href="/addTweet" class="button">Add Tweet</a>
+
+      <p>There are <%= tweets.length %> tweets</p>
+    </section>
+    <!-- Display all tweets passed in by listTweets. -->
+    <section class="tweet-list">
+      <% if (tweets.length === 0) { %>
+        <p>No tweets yet.</p>
+      <% } %>
+
+      <% tweets.forEach((tweet) => { %>
+        <article class="tweet">
+          <h2><%= tweet.title %></h2>
+
+          <p><%= tweet.tweet %></p>
+
+          <time datetime="<%= tweet.createdAt.toISOString() %>">
+            <%= tweet.createdAt.toLocaleDateString("en-GB") %>
+          </time>
+
+          <a href="/tweets/<%= tweet._id %>">See More</a>
+        </article>
+      <% }); %>
+    </section>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "the-tweeter",
+  "version": "1.0.0",
+  "description": "The Challenge: Tweeter",
+  "author": "Christine Fürst",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.12.1",
+    "morgan": "^1.12.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

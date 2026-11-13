@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📁</text></svg>">
+  <title>Tweet | Tweeter</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <%- include("partials/header") %>
+
+  <main>
+    <article class="tweet">
+      <h1>🏠 Tweeter</h1>
+      <h2><%= tweet.title %></h2>
+
+      <p><%= tweet.tweet %></p>
+
+      <time datetime="<%= tweet.createdAt.toISOString() %>">
+        <%= tweet.createdAt.toLocaleDateString("en-GB") %>
+      </time>
+    </article>
+    <!-- Actions for the displayed tweet. -->
+  <div class="tweet-actions">
+    <form action="/tweets/<%= tweet._id %>/delete" method="POST">
+      <button type="submit" class="delete-button">Delete</button>
+    </form>
+
+    <a href="/tweets/edit/<%= tweet._id %>" class="edit-button">
+      Edit Tweet
+    </a>
+  </div>
+    <p><a href="/tweets">Back to tweets</a></p>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<header>
+  <nav>
+    <% if (isLoggedIn) { %>
+      <a href="/tweets">🔐 Tweeter</a>
+
+      <span>👋 Welcome, <%= currentUser.firstName %></span>
+      
+      <form action="/auth/logout" method="POST" style="display: inline;">
+        <button type="submit">🚪 Logout</button>
+      </form>
+    <% } else { %>
+      <a href="/">👤 Login / Register</a>
+    <% } %>
+  </nav>
+</header>
