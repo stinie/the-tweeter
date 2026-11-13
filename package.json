@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "The Challenge: Tweeter",
   "author": "Christine Fürst",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stinie/the-tweeter.git"
+  },
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
