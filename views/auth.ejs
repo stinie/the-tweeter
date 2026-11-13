@@ -19,6 +19,10 @@
     <% if (registered) { %>
       <p>✅ Registration successful! You can now log in.</p>
     <% } %>
+    
+    <% if (typeof error !== "undefined" && error) { %>
+      <p class="error" role="alert"><%= error %></p>
+    <% } %>
 
     <%- include("partials/loginForm") %>
     <%- include("partials/registerForm") %>

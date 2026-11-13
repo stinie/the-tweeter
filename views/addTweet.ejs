@@ -16,6 +16,10 @@
   <main>
     <h1>🏠 Tweeter</h1>
 
+    <% if (typeof error !== "undefined" && error) { %>
+    <p class="error" role="alert"><%= error %></p>
+    <% } %>
+
     <%- include("partials/addTweetForm") %>
   </main>
 </body>

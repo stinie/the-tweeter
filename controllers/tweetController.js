@@ -27,7 +27,9 @@ const listTweets = (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send("Could not load tweets");
+      return res.status(500).render("error", {
+        error: "Could not load tweets"
+      });
     });
 };
 
@@ -65,11 +67,16 @@ const createTweet = (req, res) => {
           .map((error) => error.message)
           .join(". ");
 
-        return res.status(422).send(message);
+        // Show validation errors on the add-tweet page.
+        return res.status(422).render("addTweet", {
+          error: message
+        });
       }
 
       console.log(err);
-      return res.status(500).send("Could not create tweet");
+      return res.status(500).render("error", {
+        error: "Could not create tweet"
+      });
     });
 };
 
@@ -84,20 +91,26 @@ const showTweet = (req, res) => {
 
   // Reject invalid IDs before querying the database.
   if (!/^[a-fA-F0-9]{24}$/.test(tweetId)) {
-    return res.status(404).send("Tweet not found");
+    return res.status(404).render("error", {
+      error: "Tweet not found"
+    });
   }
 
   Tweet.findById(tweetId)
     .then((tweet) => {
       if (!tweet) {
-        return res.status(404).send("Tweet not found");
+        return res.status(404).render("error", {
+          error: "Tweet not found"
+        });
       }
 
       res.render("showTweet", { tweet });
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send("Could not load tweet");
+      return res.status(500).render("error", {
+        error: "Could not load tweet"
+      });
     });
 };
 
@@ -112,20 +125,30 @@ const deleteTweet = (req, res) => {
 
   // Reject invalid IDs before querying the database.
   if (!/^[a-fA-F0-9]{24}$/.test(tweetId)) {
-    return res.status(404).send("Tweet not found");
+    return res.status(404).render("error", {
+      error: "Tweet not found"
+    });
   }
 
-  Tweet.findByIdAndDelete(tweetId)
+  // Delete only a tweet belonging to the logged-in user.
+  Tweet.findOneAndDelete({
+    _id: tweetId,
+    userId: req.userId
+  })
     .then((tweet) => {
       if (!tweet) {
-        return res.status(404).send("Tweet not found");
+        return res.status(404).render("error", {
+          error: "Tweet not found"
+        });
       }
 
       return res.redirect("/tweets");
     })
     .catch((err) => {
       console.log(err);
-      return res.status(500).send("Could not delete tweet");
+      return res.status(500).render("error", {
+        error: "Could not delete tweet"
+      });
     });
 };
 
@@ -140,20 +163,30 @@ const showEditTweet = (req, res) => {
 
   // Reject invalid IDs before querying the database.
   if (!/^[a-fA-F0-9]{24}$/.test(tweetId)) {
-    return res.status(404).send("Tweet not found");
+    return res.status(404).render("error", {
+      error: "Tweet not found"
+    });
   }
 
-  Tweet.findById(tweetId)
+  // Find only a tweet belonging to the logged-in user.
+  Tweet.findOne({
+    _id: tweetId,
+    userId: req.userId
+  })
     .then((tweet) => {
       if (!tweet) {
-        return res.status(404).send("Tweet not found");
+        return res.status(404).render("error", {
+          error: "Tweet not found"
+        });
       }
 
       return res.render("editTweet", { tweet });
     })
     .catch((err) => {
       console.log(err);
-      return res.status(500).send("Could not load the editing form");
+      return res.status(500).render("error", {
+        error: "Could not load the editing form"
+      });
     });
 };
 
@@ -162,20 +195,29 @@ const showEditTweet = (req, res) => {
    8. UPDATE TWEET
 ======================================== */
 
-// Validate and save changes, then display the updated tweet.
+
+// Validate and save changes, then return to the tweet list.
 const updateTweet = (req, res) => {
   const tweetId = req.params.id;
   const { title, tweet } = req.body;
 
   // Reject invalid IDs before querying the database.
   if (!/^[a-fA-F0-9]{24}$/.test(tweetId)) {
-    return res.status(404).send("Tweet not found");
+    return res.status(404).render("error", {
+      error: "Tweet not found"
+    });
   }
 
-  Tweet.findById(tweetId)
+  // Find only a tweet belonging to the logged-in user.
+  Tweet.findOne({
+    _id: tweetId,
+    userId: req.userId
+  })
     .then((existingTweet) => {
       if (!existingTweet) {
-        return res.status(404).send("Tweet not found");
+        return res.status(404).render("error", {
+          error: "Tweet not found"
+        });
       }
 
       // Update only the editable fields.
@@ -183,7 +225,7 @@ const updateTweet = (req, res) => {
       existingTweet.tweet = tweet;
 
       // Saving runs the schema's required and length checks.
-      return existingTweet.save().then((savedTweet) => {
+      return existingTweet.save().then(() => {
         return res.redirect("/tweets");
       });
     })
@@ -193,11 +235,21 @@ const updateTweet = (req, res) => {
           .map((error) => error.message)
           .join(". ");
 
-        return res.status(422).send(message);
+        // Keep the submitted values on the editing page.
+        return res.status(422).render("editTweet", {
+          error: message,
+          tweet: {
+            _id: tweetId,
+            title,
+            tweet
+          }
+        });
       }
 
       console.log(err);
-      return res.status(500).send("Could not update tweet");
+      return res.status(500).render("error", {
+        error: "Could not update tweet"
+      });
     });
 };
 

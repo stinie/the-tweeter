@@ -41,12 +41,18 @@ const register = (req, res) => {
     typeof confirmPassword !== "string" ||
     !confirmPassword
   ) {
-    return res.status(400).send("Please fill in all fields");
+    return res.status(400).render("auth", {
+      registered: false,
+      error: "Please fill in all fields"
+    });
   }
 
-  // Check that both passwords match before hashing.
+  // Display the password mismatch on the authentication page.
   if (password !== confirmPassword) {
-    return res.status(400).send("Passwords do not match");
+    return res.status(400).render("auth", {
+      registered: false,
+      error: "Passwords do not match"
+    });
   }
 
   // Hash the password and save the user.
@@ -65,11 +71,18 @@ const register = (req, res) => {
     .catch((err) => {
       // Handle an email address that is already registered.
       if (err.code === 11000) {
-        return res.status(409).send("Email is already registered");
+        // Display the error on the login and registration page.
+        return res.status(409).render("auth", {
+          registered: false,
+          error: "Email is already registered"
+        });
       }
 
       console.log(err);
-      return res.status(500).send("Registration failed");
+      return res.status(500).render("auth", {
+        registered: false,
+        error: "Registration failed"
+      });
     });
 };
 
@@ -85,7 +98,10 @@ const login = (req, res) => {
 
   // Check that both fields are filled in.
   if (!email || !password) {
-    return res.status(400).send("Please fill in all fields");
+    return res.status(400).render("auth", {
+      registered: false,
+      error: "Please fill in all fields"
+    });
   }
 
   // Find the user by email.
@@ -93,14 +109,20 @@ const login = (req, res) => {
     .then((user) => {
       // Check whether the user exists.
       if (!user) {
-        return res.status(401).send("Invalid email or password");
+        return res.status(401).render("auth", {
+          registered: false,
+          error: "Invalid email or password"
+        });
       }
 
       // Compare the submitted password with the stored hash.
       return bcrypt.compare(password, user.password)
         .then((isMatch) => {
           if (!isMatch) {
-            return res.status(401).send("Invalid email or password");
+            return res.status(401).render("auth", {
+              registered: false,
+              error: "Invalid email or password"
+            });
           }
 
           // Password is correct.
@@ -131,7 +153,10 @@ const login = (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send("Login failed");
+      return res.status(500).render("auth", {
+        registered: false,
+        error: "Login failed"
+      });
     });
 };
 

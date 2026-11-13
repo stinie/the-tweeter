@@ -277,3 +277,8 @@ form[action^="/tweets/edit/"] button {
   font: inherit;
   cursor: pointer;
 }
+
+/* Error messages within the page. */
+.error {
+  color: #b00020;
+}

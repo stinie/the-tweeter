@@ -1,0 +1,21 @@
+<form action="/tweets/edit/<%= tweet._id %>" method="POST">
+  <label for="tweet-title">Title</label>
+  <input
+    type="text"
+    id="tweet-title"
+    name="title"
+    value="<%= tweet.title %>"
+    minlength="21"
+    required
+  >
+
+  <label for="tweet-content">Tweet</label>
+  <textarea
+    id="tweet-content"
+    name="tweet"
+    maxlength="50"
+    required
+  ><%= tweet.tweet %></textarea>
+
+  <button type="submit">Submit</button>
+</form>
